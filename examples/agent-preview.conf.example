@@ -1,0 +1,5 @@
+# Installed as /etc/agent-preview.conf with an explicit server URL.
+AGENT_PREVIEW_HOST=127.0.0.1
+AGENT_PREVIEW_PORT=4317
+AGENT_PREVIEW_PUBLIC_URL=https://server.example.com
+AGENT_PREVIEW_TUNNEL_SERVICE=cloudflared.service

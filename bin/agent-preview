@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""Repository and installed entry point for Agent Preview."""
+
+from pathlib import Path
+import sys
+
+
+HERE = Path(__file__).resolve()
+for candidate in (
+    HERE.parents[1] / "lib",
+    HERE.parents[1] / "lib" / "agent-preview",
+):
+    if (candidate / "agent_preview" / "cli.py").is_file():
+        sys.path.insert(0, str(candidate))
+        break
+
+from agent_preview.cli import main  # noqa: E402
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

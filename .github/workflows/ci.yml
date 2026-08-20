@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile
+        run: python -m compileall -q bin lib installers scripts tests
+      - name: Test
+        env:
+          PYTHONPATH: lib
+        run: python -m unittest discover -s tests -v
+      - name: Validate skill
+        run: python scripts/validate_skill.py
+      - name: Build release
+        run: python scripts/build_release.py
