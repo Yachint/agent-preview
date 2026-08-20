@@ -294,6 +294,11 @@ class ProcInspector:
             if end < 0:
                 return None
             fields = raw_stat[end + 2 :].split()
+            if len(fields) <= 19 or fields[0] in {"Z", "X"}:
+                # Zombie and dead tasks can retain a /proc entry until their
+                # parent reaps them, but they can no longer serve traffic or
+                # respond to signals. Treat them as exited.
+                return None
             pgid = int(fields[2])
             start_time = int(fields[19])
             raw_command = (base / "cmdline").read_bytes().split(b"\0")

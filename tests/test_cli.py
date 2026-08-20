@@ -105,6 +105,37 @@ class ConfigTests(unittest.TestCase):
             self.assertEqual(value["public_url"], "https://server.example.com")
 
 
+class ProcInspectorTests(unittest.TestCase):
+    def write_process(self, root: Path, pid: int, state: str) -> None:
+        process = root / str(pid)
+        process.mkdir()
+        fields = [state, "1", str(pid), *(["0"] * 16), "456789"]
+        (process / "stat").write_text(
+            f"{pid} (worker with spaces) {' '.join(fields)}\n",
+            encoding="utf-8",
+        )
+        (process / "cmdline").write_bytes(b"python3\0server.py\0")
+
+    def test_reads_live_process_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            self.write_process(root, 1234, "S")
+            value = cli.ProcInspector(root).process(1234)
+            self.assertIsNotNone(value)
+            assert value is not None
+            self.assertEqual(value.pid, 1234)
+            self.assertEqual(value.pgid, 1234)
+            self.assertEqual(value.start_time, 456789)
+            self.assertEqual(value.command, ("python3", "server.py"))
+
+    def test_treats_zombie_and_dead_processes_as_exited(self) -> None:
+        for state in ("Z", "X"):
+            with self.subTest(state=state), tempfile.TemporaryDirectory() as raw:
+                root = Path(raw)
+                self.write_process(root, 1234, state)
+                self.assertIsNone(cli.ProcInspector(root).process(1234))
+
+
 class RuntimeStoreTests(unittest.TestCase):
     def test_state_round_trip_is_private(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
