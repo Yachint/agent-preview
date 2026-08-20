@@ -102,3 +102,18 @@ the repository is shaped as it is; current contributor instructions live in
   copy that could drift from the canonical guidance.
 - `MEMORY.md` records durable decisions chronologically, while actionable
   current rules remain in `AGENTS.md`.
+
+## 2026-08-20: v0.1.1 occupied-port guidance tightened
+
+- The first real-agent acceptance test passed discovery, launch, status, logs,
+  graceful replacement, stop, and tunnel-isolation checks on an ARM64 VPS.
+- During the collision interaction, the agent added a third “Do nothing”
+  choice, abbreviated **Keep existing process**, and created content beneath
+  the running server's document root before the user chose. The CLI remained
+  safe, but the skill did not follow the required two-choice contract.
+- The canonical workflow now checks status and port health before inspecting
+  or modifying a requested preview, forbids exposing new content beneath a
+  running preview, and requires exactly the two complete, ordered labels with
+  no recommendations or alternatives.
+- Static contract tests protect the wording and workflow order. Release
+  archives now also include `AGENTS.md`, `CLAUDE.md`, and `MEMORY.md`.

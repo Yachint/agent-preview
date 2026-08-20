@@ -10,12 +10,13 @@ Use the installed `agent-preview` CLI. The Cloudflare tunnel is permanent infras
 ## Start or reuse a preview
 
 1. Run `agent-preview status --json`.
-2. Inspect the project's documentation and package scripts to identify its normal development command.
-3. Run `agent-preview check --json`.
-4. Configure the application with its native flags so it listens on the reported host and port. Prefer strict-port behavior. Read [frameworks.md](references/frameworks.md) when framework-specific flags, trusted-host settings, redirects, cookies, WebSockets, or CORS matter.
-5. Run the command through `agent-preview run -- <command...>`. Pass arguments directly; do not construct an evaluated shell string.
-6. Report the returned HTTPS URL and mention that Cloudflare authentication may appear.
-7. Leave the detached preview running while the user needs it. Stop it only when the user explicitly says the preview is finished.
+2. Run `agent-preview check --json`.
+3. If either result shows an occupied port, stop this workflow immediately and follow **Occupied preview port** below before inspecting, creating, modifying, building, or launching the newly requested preview. In particular, do not place new content beneath the working directory of a running preview, because that can expose it before the user chooses what to do.
+4. Inspect the project's documentation and package scripts to identify its normal development command.
+5. Configure the application with its native flags so it listens on the reported host and port. Prefer strict-port behavior. Read [frameworks.md](references/frameworks.md) when framework-specific flags, trusted-host settings, redirects, cookies, WebSockets, or CORS matter.
+6. Run the command through `agent-preview run -- <command...>`. Pass arguments directly; do not construct an evaluated shell string.
+7. Report the returned HTTPS URL and mention that Cloudflare authentication may appear.
+8. Leave the detached preview running while the user needs it. Stop it only when the user explicitly says the preview is finished.
 
 Do not serve a home directory, repository root, `.git`, credentials, environment files, a terminal, an unrestricted upload directory, an admin console, or a debug endpoint without warning the user and obtaining explicit approval.
 
@@ -33,6 +34,8 @@ Then ask the user to choose exactly one:
 
 1. **Kill process and replace it** — terminate the reported listener and launch the newly requested command.
 2. **Keep existing process** — leave it running, register it when necessary, return its public URL, and cancel the newly requested launch.
+
+Present only those two choices, in that order and with those complete labels. Do not add, remove, rename, abbreviate, recommend, or reorder choices. “Do nothing,” reuse the existing server, serve the new content at another path, and similar alternatives are not additional choices. Even if newly created content would already be reachable through the listener's current document root, do not expose or rely on it to bypass this interaction.
 
 If the response is absent or ambiguous, take no action.
 

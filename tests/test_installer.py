@@ -43,7 +43,7 @@ class ProgramInstallerTests(unittest.TestCase):
                 [str(installed), "--version"], text=True, capture_output=True, check=False
             )
             self.assertEqual(version.returncode, 0, version.stderr)
-            self.assertIn("0.1.0", version.stdout)
+            self.assertIn("0.1.1", version.stdout)
 
     def test_invalid_public_url_fails_before_installing(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

@@ -22,7 +22,12 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(archive_a.read_bytes(), archive_b.read_bytes())
             self.assertEqual(checksum_a.read_text(), checksum_b.read_text())
             with tarfile.open(archive_a, "r:gz") as bundle:
-                self.assertIn("agent-preview-v0.1.0/LICENSE", bundle.getnames())
+                prefix = f"agent-preview-v{build_release.version()}"
+                names = bundle.getnames()
+                self.assertIn(f"{prefix}/LICENSE", names)
+                self.assertIn(f"{prefix}/AGENTS.md", names)
+                self.assertIn(f"{prefix}/CLAUDE.md", names)
+                self.assertIn(f"{prefix}/MEMORY.md", names)
 
 
 if __name__ == "__main__":

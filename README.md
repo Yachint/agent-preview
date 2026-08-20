@@ -19,9 +19,9 @@ browser → Cloudflare Access → named tunnel → http://127.0.0.1:4317
 Verify the release checksum before extracting the archive:
 
 ```bash
-sha256sum -c agent-preview-v0.1.0.tar.gz.sha256
-tar -xzf agent-preview-v0.1.0.tar.gz
-cd agent-preview-v0.1.0
+sha256sum -c agent-preview-v0.1.1.tar.gz.sha256
+tar -xzf agent-preview-v0.1.1.tar.gz
+cd agent-preview-v0.1.1
 sudo ./installers/install.sh --public-url https://server.example.com
 ./installers/install-skill.py --harness all
 ```
