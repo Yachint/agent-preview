@@ -117,3 +117,22 @@ the repository is shaped as it is; current contributor instructions live in
   no recommendations or alternatives.
 - Static contract tests protect the wording and workflow order. Release
   archives now also include `AGENTS.md`, `CLAUDE.md`, and `MEMORY.md`.
+
+## 2026-08-20: v0.1.1 published and primary server upgraded
+
+- Annotated tag `v0.1.1` points to commit `3bce706` and is immutable. AMD64 and
+  ARM64 CI passed before publication.
+- The published deterministic archive has SHA-256
+  `9716aff705e535fbcdeb3dbebecd144bad95b407813c2fa9b4d7b3b54795fe3e`.
+  Published assets were downloaded, checksum-verified, and compared
+  byte-for-byte with the locally tested artifacts.
+- The primary ARM64 VPS was upgraded in place from `v0.1.0` to `v0.1.1` using
+  the release archive. Its existing root-owned endpoint configuration was
+  preserved, and its harness adapters continued resolving to the updated
+  canonical skill under `/usr/local/share/agent-preview`.
+- Post-upgrade checks confirmed version `0.1.1`, a free loopback preview port,
+  absent runtime metadata, valid configuration, and an active tunnel service.
+  No preview process needed to be stopped during the upgrade.
+- This confirms the release installation and upgrade path only. Full
+  `v0.1.1` agent-behavior acceptance—including both strict occupied-port
+  choices—remains pending, as does rollout to the secondary VPS.

@@ -39,6 +39,41 @@ The program is installed under `/usr/local`; the canonical skill is stored at `/
 
 Symlinks are used by default. Add `--copy` when the harness environment cannot follow them. The installer refuses to overwrite unmanaged destinations.
 
+## Upgrade an existing installation
+
+Confirm whether a preview is active before upgrading. If one is running, stop
+it only when that preview is no longer needed:
+
+```bash
+agent-preview status --json
+agent-preview stop --grace-seconds 5
+```
+
+Download the new release archive and checksum from the Releases page, verify
+them, and run the installer from the extracted directory:
+
+```bash
+sha256sum -c agent-preview-vX.Y.Z.tar.gz.sha256
+tar -xzf agent-preview-vX.Y.Z.tar.gz
+cd agent-preview-vX.Y.Z
+sudo ./installers/install.sh
+```
+
+Do not pass `--public-url` during a normal upgrade. The installer preserves the
+existing `/etc/agent-preview.conf`, replaces the program and canonical skill
+under `/usr/local`, and leaves `cloudflared.service` untouched. Existing
+symlink-based harness adapters immediately reference the updated canonical
+skill; restart the agent harness so it reloads the new instructions.
+
+Verify the result:
+
+```bash
+agent-preview --version
+agent-preview check --json
+agent-preview status --json
+systemctl is-active cloudflared.service
+```
+
 ## Configuration
 
 The endpoint is administrator policy and cannot be changed by ordinary CLI flags or environment variables:
