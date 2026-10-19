@@ -38,8 +38,24 @@ class InstallerTests(unittest.TestCase):
             )
             self.assertTrue((home / ".agents" / "skills" / "agent-preview").is_symlink())
             self.assertTrue((home / ".claude" / "skills" / "agent-preview").is_symlink())
+            grok = home / ".grok" / "skills" / "agent-preview"
+            self.assertTrue(grok.is_symlink())
+            self.assertEqual(grok.resolve(), self.source.resolve())
             self.assertFalse((home / ".cursor" / "skills" / "agent-preview").exists())
             self.assertFalse((home / ".config" / "opencode" / "skills" / "agent-preview").exists())
+
+    def test_grok_symlink_install_and_uninstall(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            home = Path(raw)
+            args = ["--harness", "grok", "--home", str(home), "--source", str(self.source)]
+            self.assertEqual(install_skill.main(args), 0)
+            self.assertEqual(install_skill.main(args), 0)
+            target = home / ".grok" / "skills" / "agent-preview"
+            self.assertTrue(target.is_symlink())
+            self.assertEqual(target.resolve(), self.source.resolve())
+            self.assertEqual(install_skill.main(args + ["--uninstall"]), 0)
+            self.assertFalse(target.exists())
+            self.assertEqual(install_skill.main(args + ["--uninstall"]), 0)
 
     def test_copy_uninstall_requires_marker(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

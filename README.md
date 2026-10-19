@@ -28,13 +28,14 @@ sudo ./installers/install.sh --public-url https://server.example.com
 
 The program is installed under `/usr/local`; the canonical skill is stored at `/usr/local/share/agent-preview/skills/agent-preview`. An existing `/etc/agent-preview.conf` is preserved during upgrades.
 
-`--harness all` installs the shared Agent Skills package at `~/.agents/skills/agent-preview` for Codex, OpenCode, and Cursor, plus `~/.claude/skills/agent-preview` for Claude Code. Native single-harness targets are also available:
+`--harness all` installs the shared Agent Skills package at `~/.agents/skills/agent-preview` for Codex, OpenCode, and Cursor, plus `~/.claude/skills/agent-preview` for Claude Code and `~/.grok/skills/agent-preview` for Grok Build. Native single-harness targets are also available:
 
 ```bash
 ./installers/install-skill.py --harness claude
 ./installers/install-skill.py --harness codex
 ./installers/install-skill.py --harness opencode
 ./installers/install-skill.py --harness cursor
+./installers/install-skill.py --harness grok
 ```
 
 Symlinks are used by default. Add `--copy` when the harness environment cannot follow them. The installer refuses to overwrite unmanaged destinations.

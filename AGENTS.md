@@ -31,8 +31,8 @@ process-group ownership before it registers or signals anything.
 - `skills/agent-preview/`: canonical provider-neutral skill and framework
   reference.
 - `installers/install.sh`: root program/configuration installer.
-- `installers/install-skill.py`: per-user Claude, Codex, OpenCode, and Cursor
-  skill adapter installer.
+- `installers/install-skill.py`: per-user Claude, Codex, OpenCode, Cursor, and
+  Grok Build skill adapter installer.
 - `installers/uninstall.sh`: ownership-aware program removal; it intentionally
   preserves `/etc/agent-preview.conf`.
 - `examples/`: configuration and framework command examples.
