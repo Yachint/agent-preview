@@ -136,3 +136,16 @@ the repository is shaped as it is; current contributor instructions live in
 - This confirms the release installation and upgrade path only. Full
   `v0.1.1` agent-behavior acceptance—including both strict occupied-port
   choices—remains pending, as does rollout to the secondary VPS.
+
+## 2026-10-19: Grok Build skill adapter
+
+- Grok Build stores personal skills in `~/.grok/skills`. It can also discover
+  `~/.agents/skills` and `~/.claude/skills`, but the native directory is the
+  location its own tooling reports.
+- `--harness grok` installs that directory from the same canonical skill.
+  `--harness all` includes it with the shared Codex path and Claude Code's
+  private path.
+- Cursor and OpenCode continue to use the shared `~/.agents/skills` path for
+  `all`. Their private directories remain single-harness targets.
+- Adapters stay idempotent, still symlink or copy one canonical skill, and
+  still refuse unmanaged destination collisions.

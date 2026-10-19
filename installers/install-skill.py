@@ -20,13 +20,15 @@ def destinations(home: Path, harness: str) -> list[Path]:
     mapping = {
         "claude": home / ".claude" / "skills" / "agent-preview",
         # Codex's current user-level Agent Skills directory. Cursor and OpenCode
-        # also recognize it, so `all` needs only this and Claude's private path.
+        # also recognize it, so `all` does not duplicate their private paths.
+        # Grok Build's native user directory is separate and is included in `all`.
         "codex": home / ".agents" / "skills" / "agent-preview",
         "opencode": home / ".config" / "opencode" / "skills" / "agent-preview",
         "cursor": home / ".cursor" / "skills" / "agent-preview",
+        "grok": home / ".grok" / "skills" / "agent-preview",
     }
     if harness == "all":
-        return [mapping["codex"], mapping["claude"]]
+        return [mapping["codex"], mapping["claude"], mapping["grok"]]
     return [mapping[harness]]
 
 
@@ -73,7 +75,11 @@ def uninstall_one(source: Path, target: Path) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="install-skill.py")
-    parser.add_argument("--harness", choices=("claude", "codex", "opencode", "cursor", "all"), required=True)
+    parser.add_argument(
+        "--harness",
+        choices=("claude", "codex", "opencode", "cursor", "grok", "all"),
+        required=True,
+    )
     parser.add_argument("--home", type=Path, default=Path.home())
     parser.add_argument("--source", type=Path)
     parser.add_argument("--copy", action="store_true", help="copy instead of symlinking")
